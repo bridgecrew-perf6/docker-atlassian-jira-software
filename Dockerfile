@@ -23,14 +23,15 @@ RUN apt-get update  \
     && mkdir -p                "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_HOME}/caches/indexes" \
     && chmod -R 700            "${JIRA_HOME}" \
-    && chown -R jira:jira  "${JIRA_HOME}" \
-    && chmod -R u=rwx,go-rwx "${JIRA_HOME}" \
-    && chmod -R o-x "${JIRA_HOME}" \
+    && mkdir -p                "${JIRA_INSTALL}/conf/Catalina" \
+    && sudo chown -R jira          "${JIRA_INSTALL}" \
+    && sudo chmod -R u=rwx,go-rwx  "${JIRA_INSTALL}" \
+    && sudo chown -R jira  "${JIRA_HOME}" \
+    && sudo chmod -R u=rwx,go-rwx "${JIRA_HOME}" \
+    && sudo chmod -R o-x "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_INSTALL}/conf/Catalina" \
     && curl -Ls                "https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-8.12.0.tar.gz" | tar -xz --directory "${JIRA_INSTALL}" --strip-components=1 --no-same-owner \
     && curl -Ls                "https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.38.tar.gz" | tar -xz --directory "${JIRA_INSTALL}/lib" --strip-components=1 --no-same-owner "mysql-connector-java-5.1.38/mysql-connector-java-5.1.38-bin.jar" \
-    && chown -R jira:jira  "${JIRA_INSTALL}" \
-    && chmod -R u=rwx,go-rwx  "${JIRA_INSTALL}" \
     && sed --in-place          "s/java version/openjdk version/g" "${JIRA_INSTALL}/bin/check-java.sh" \
     && echo -e                 "\njira.home=$JIRA_HOME" >> "${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties" \
     && touch -d "@0"           "${JIRA_INSTALL}/conf/server.xml"\
