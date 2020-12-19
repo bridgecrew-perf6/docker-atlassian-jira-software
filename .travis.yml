@@ -1,0 +1,11 @@
+language: ruby
+
+services:
+  - docker
+
+script:
+  - docker build .
+
+branches:
+  only:
+    - master
